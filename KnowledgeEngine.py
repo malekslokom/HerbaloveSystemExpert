@@ -14,7 +14,6 @@ fertilizer_details={'DAP':"DAP fertilizer is an excellent source of Phosphorus a
 class Welcome(KnowledgeEngine):
     @DefFacts()
     def initial(self):
-        #print("Welcome this is DR. Experta, we declare your Crop result on the basis of facts\n")
         yield Fact(action="find_Crop")
         yield Fact(action="find_Fertilizer")
 
@@ -572,8 +571,6 @@ class Welcome(KnowledgeEngine):
         a =Fertilizer
         predictionResult["Fertilizer"]=Fertilizer
         predictionResult["fertilizer_details"]=fertilizer_details[a]
-        #Crop_detail=get_description(a)
-        #Crop_treatment=get_treatment(a)
         #print("For: \n  Rainfall= "+str(Rainfall)+"\n  Potassium= "+str(Potassium)+" \n  Phosphorous= "+str(Phosphorous)+" \n  Nitrogen= "+str(Nitrogen)+" \n  Temperature= "+str(Temperature)+" \n  Humidity= "+str(Humidity)+"\n")
         print("The most probable Fertilizer is "+a+"\n")
         print(fertilizer_details[a])
@@ -592,17 +589,12 @@ class Welcome(KnowledgeEngine):
 
 global predictionResult
 predictionResult={}
-#if __name__=="__main__":
+
 def main(inputU):
-    
     global inputUser
     inputUser=inputU
     engine=Welcome()
     engine.reset()   
     engine.run()
     return predictionResult
-        # more=input("would you like to test other features? (yes/no): ")
-        # if ((more=="no") or (more=="NO")):
-        #     print("Thank you for showing up! Hope you increase your crop yield.")
-        #     break
-            
+       

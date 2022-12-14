@@ -20,7 +20,6 @@ class Welcome(KnowledgeEngine):
 
     @Rule(Fact(action='find_Crop'),NOT(Fact(Nitrogen=W())),NOT(Fact(Phosphorous=W())),NOT(Fact(Potassium=W())),NOT(Fact(Temperature=W())),NOT(Fact(Humidity=W())),NOT(Fact(Rainfall=W())),salience=1)
     def symptoms(self):
-        print("aaa")
         print(inputUser)
         
         self.declare(Fact(Nitrogen=float(inputUser["Nitrogen"])))

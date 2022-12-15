@@ -17,42 +17,49 @@ class Welcome(KnowledgeEngine):
         yield Fact(action="find_Crop")
         yield Fact(action="find_Fertilizer")
 
-    @Rule(Fact(action='find_Crop'),NOT(Fact(Nitrogen=W())),NOT(Fact(Phosphorous=W())),NOT(Fact(Potassium=W())),NOT(Fact(Temperature=W())),NOT(Fact(Humidity=W())),NOT(Fact(Rainfall=W())),salience=1)
-    def symptoms(self):
-        print(inputUser)
+    #Reading inputs form the web application
+    @Rule(Fact(action='find_Crop'),
+          NOT(Fact(Nitrogen=W())),
+          NOT(Fact(Phosphorous=W())),
+          NOT(Fact(Potassium=W())),
+          NOT(Fact(Temperature=W())),
+          NOT(Fact(Humidity=W())),
+          NOT(Fact(Rainfall=W())),salience=1)
+    def features(self):
+        if(inputUser):
+            self.declare(Fact(Nitrogen=float(inputUser["Nitrogen"])))
+            self.declare(Fact(Phosphorous=float(inputUser["Phosphorous"])))
+            self.declare(Fact(Potassium=float(inputUser["Potassium"])))
+            self.declare(Fact(Temperature=float(inputUser["Temperature"])))
+            self.declare(Fact(Humidity=float(inputUser["Humidity"])))
+            self.declare(Fact(Rainfall=float(inputUser["Rainfall"])))
+            print(MATCH.Rainfall)
+            print(type(MATCH.Rainfall))
         
-        self.declare(Fact(Nitrogen=float(inputUser["Nitrogen"])))
-        self.declare(Fact(Phosphorous=float(inputUser["Phosphorous"])))
-        self.declare(Fact(Potassium=float(inputUser["Potassium"])))
-        self.declare(Fact(Temperature=float(inputUser["Temperature"])))
-        self.declare(Fact(Humidity=float(inputUser["Humidity"])))
-        self.declare(Fact(Rainfall=float(inputUser["Rainfall"])))
-        print(MATCH.Rainfall)
-        print(type(MATCH.Rainfall))
+    #Reading inputs using the console
     @Rule(Fact(action='find_Crop'),NOT(Fact(Nitrogen=W())),salience=-999)
-    def symptom_0(self):
-        self.declare(Fact(Nitrogen=float(input("Nitrogen: "))))  #first
+    def feature_0(self):
+        self.declare(Fact(Nitrogen=float(input(" Nitrogen: "))))  
     
     @Rule(Fact(action='find_Crop'),NOT(Fact(Phosphorous=W())),salience=-999)
-    def symptom_1(self):
-        self.declare(Fact(Phosphorous=float(input("Phosphorous: "))))  #first
+    def feature_1(self):
+        self.declare(Fact(Phosphorous=float(input(" Phosphorous: "))))  
    
-    
     @Rule(Fact(action='find_Crop'),NOT(Fact(Potassium=W())),salience=-999)
-    def symptom_2(self):
-        self.declare(Fact(Potassium=float(input("Potassium: "))))  #first
+    def feature_2(self):
+        self.declare(Fact(Potassium=float(input(" Potassium: "))))  
     
     @Rule(Fact(action='find_Crop'),NOT(Fact(Temperature=W())),salience=-999)
-    def symptom_3(self):
-        self.declare(Fact(Temperature=float(input("Temperature: "))))  #first
+    def feature_3(self):
+        self.declare(Fact(Temperature=float(input(" Temperature: "))))  
     
     @Rule(Fact(action='find_Crop'),NOT(Fact(Humidity=W())),salience=-999)
-    def symptom_4(self):
-        self.declare(Fact(Humidity=float(input("Humidity: "))))  #first
+    def feature_4(self):
+        self.declare(Fact(Humidity=float(input(" Humidity: "))))  
     
     @Rule(Fact(action='find_Crop'),NOT(Fact(Rainfall=W())),salience=-999)
-    def symptom_6(self):
-        self.declare(Fact(Rainfall=float(input("Rainfall: "))))  #first
+    def feature_6(self):
+        self.declare(Fact(Rainfall=float(input(" Rainfall: "))))  
     
     
     
@@ -441,11 +448,19 @@ class Welcome(KnowledgeEngine):
           Fact(Crop=MATCH.Crop),salience=-997)
     def Crop(self,Rainfall,Potassium,Phosphorous,Nitrogen,Temperature,Humidity,Crop):
         a =Crop
-        
-        #Crop_detail=get_description(a)
-        #Crop_treatment=get_treatment(a)
-        print("For: \n  Rainfall= "+str(Rainfall)+"\n  Potassium= "+str(Potassium)+" \n  Phosphorous= "+str(Phosphorous)+" \n  Nitrogen= "+str(Nitrogen)+" \n  Temperature= "+str(Temperature)+" \n  Humidity= "+str(Humidity)+"\n")
-        print("The most probable Crop is "+a+"\n")
+
+        #print("\n For: \n  Rainfall= "+str(Rainfall)+"\n  Potassium= "+str(Potassium)+" \n  Phosphorous= "+str(Phosphorous)+" \n  Nitrogen= "+str(Nitrogen)+" \n  Temperature= "+str(Temperature)+" \n  Humidity= "+str(Humidity)+"\n")
+        print("\n\033[92mFacts: \033[0m ")
+        print(" +----------------------------------------------------------------------+")
+        print(" |  Rainfall                                  "+str(Rainfall)+" "*(26-len(str(Rainfall)))+"|")
+        print(" |  Potassium                                 "+str(Potassium)+" "*(26-len(str(Potassium)))+"|")
+        print(" |  Phosphorous                               "+str(Phosphorous)+" "*(26-len(str(Phosphorous)))+"|")
+        print(" |  Nitrogen                                  "+str(Nitrogen)+" "*(26-len(str(Nitrogen)))+"|")
+        print(" |  Temperature                               "+str(Temperature)+" "*(26-len(str(Temperature)))+"|")
+        print(" |  Humidity                                  "+str(Humidity)+" "*(26-len(str(Humidity)))+"|")
+        print(" +----------------------------------------------------------------------+")
+        print("\n\033[92mConclusion: \033[0m ")
+        print(" *The most probable Crop is \033[92m"+a+"\033[0m")
         predictionResult["Rainfall"]=Rainfall
         predictionResult["Crop"]=Crop
         predictionResult["Potassium"]=Potassium
@@ -453,10 +468,8 @@ class Welcome(KnowledgeEngine):
         predictionResult["Nitrogen"]=Nitrogen
         predictionResult["Temperature"]=Temperature
         predictionResult["Humidity"]=Humidity
-
         predictionResult["Crop"]=Crop
-        #print("the short description is "+Crop_detail+"\n")
-        #print("the common medications are "+Crop_treatment+ "\n")
+        
         
     @Rule(Fact(action='find_Crop'),
          Fact(Rainfall=MATCH.Rainfall),
@@ -468,8 +481,9 @@ class Welcome(KnowledgeEngine):
          NOT(Fact(Crop=MATCH.Crop)),salience=-999)
     def not_matched(self,Rainfall,Potassium,Phosphorous,Nitrogen,Temperature,Humidity):
         print("Your features doesn't matches our record")
-        predictionResult["Crop"]="Your features doesn't matches our record"
+        predictionResult["Crop"]="Not defined in our knowledge engine"
 
+#find_Fertilizer
     @Rule(Fact(action='find_Fertilizer'),
           Fact(Rainfall=MATCH.Rainfall),
           Fact(Potassium=MATCH.Potassium),
@@ -508,8 +522,6 @@ class Welcome(KnowledgeEngine):
           TEST(lambda Potassium: Potassium >  5.00 and Potassium > 15.00))
     def Fertilizer_2(self):
         self.declare(Fact(Fertilizer="10-26-26"))   
-
-
 
     @Rule(Fact(action='find_Fertilizer'),
           Fact(Rainfall=MATCH.Rainfall),
@@ -572,8 +584,8 @@ class Welcome(KnowledgeEngine):
         predictionResult["Fertilizer"]=Fertilizer
         predictionResult["fertilizer_details"]=fertilizer_details[a]
         #print("For: \n  Rainfall= "+str(Rainfall)+"\n  Potassium= "+str(Potassium)+" \n  Phosphorous= "+str(Phosphorous)+" \n  Nitrogen= "+str(Nitrogen)+" \n  Temperature= "+str(Temperature)+" \n  Humidity= "+str(Humidity)+"\n")
-        print("The most probable Fertilizer is "+a+"\n")
-        print(fertilizer_details[a])
+        print(" *The most probable Fertilizer is \033[92m"+a+"\033[0m")
+        print(" "+fertilizer_details[a])
         
     @Rule(Fact(action='find_Fertilizer'),
          Fact(Rainfall=MATCH.Rainfall),
@@ -585,7 +597,8 @@ class Welcome(KnowledgeEngine):
          NOT(Fact(Fertilizer=MATCH.Fertilizer)),salience=-999)
     def not_matched_Fertilizer(self,Rainfall,Potassium,Phosphorous,Nitrogen,Temperature,Humidity):
         print("Your features doesn't matches our record.")
-        predictionResult["Fertilizer"]="Your features doesn't matches our record."
+        predictionResult["Fertilizer"]="Your features doesn't matches our records."
+        predictionResult["fertilizer_details"]=""
 
 global predictionResult
 predictionResult={}
@@ -593,6 +606,11 @@ predictionResult={}
 def main(inputU):
     global inputUser
     inputUser=inputU
+    print("+-----------------------------------------------------------------------+")
+    print("|                         Welcome in Herbalove                          |")
+    print("+-----------------------------------------------------------------------+")
+    if (not inputUser):
+        print("\n\033[92mEnter soil characteristics :\033[0m")
     engine=Welcome()
     engine.reset()   
     engine.run()
